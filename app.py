@@ -9,7 +9,7 @@ from resources.items import *
 from resources.store import *
 import os
 
-os.chdir("C:\Python\Project1\Flask_Application\SQLAlchemy\Code")
+#os.chdir("C:\Python\Project1\Flask_Application\SQLAlchemy\Code")
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///items_data.db'
@@ -17,10 +17,6 @@ app.config['SQLALCHEMY_BINDS'] = {'db_two': 'sqlite:///user_data.db'}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'secret_val'
 api = Api(app)
-
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 jwt = JWT(app, authenticate, identity)  # /auth
 

@@ -9,11 +9,18 @@ from resources.items import *
 from resources.store import *
 import os
 
-#os.chdir("C:\Python\Project1\Flask_Application\SQLAlchemy\Code")
+def process_uri(my_uri):
+    if my_uri.startswith('postgres://'):
+        return my_uri.replace("postgres://", "postgresql://", 1)
+    return my_uri
+
+#os.chdir(os.getcwd())
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///items_data.db'
-app.config['SQLALCHEMY_BINDS'] = {'db_two': 'sqlite:///user_data.db'}
+uri1 = process_uri(os.environ.get('DATABASE_URL','sqlite:///items_data.db'))
+uri2 = process_uri(os.environ.get('DATABASE_URL','sqlite:///user_data.db'))
+app.config['SQLALCHEMY_DATABASE_URI'] = uri1
+app.config['SQLALCHEMY_BINDS'] = {'db_two': uri2}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'secret_val'
 api = Api(app)
